@@ -17,6 +17,15 @@ content-type: application/json
     "password": "Test.123"
 }
 
+###
+POST http://localhost:5000/api/auth/login
+content-type: application/json
+
+{
+    "username": "Ben",
+    "password": "Test.123"
+}
+
 
 ### 
 GET http://localhost:5000/api/values
