@@ -3,7 +3,7 @@ POST http://localhost:5000/api/auth/register
 content-type: application/json
 
 {
-    "username": "ee9eee",
+    "username": "Ben",
     "password": "Test.123"
 }
 
@@ -13,7 +13,7 @@ POST http://localhost:5000/api/auth/login
 content-type: application/json
 
 {
-    "username": "ee9eee",
+    "username": "Ben",
     "password": "Test.123"
 }
 
@@ -29,3 +29,10 @@ content-type: application/json
 
 ### 
 GET http://localhost:5000/api/values
+
+### 
+@token = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxMSIsInVuaXF1ZV9uYW1lIjoiQmVuIiwibmJmIjoxNTM4ODU4Mjk3LCJleHAiOjE1Mzg5NDQ2OTcsImlhdCI6MTUzODg1ODI5N30.t-c58FbrCPxLSwYHOc-wPVmUIVftfcMRi4UsBv0BeBw
+
+GET http://localhost:5000/api/users
+Authorization: {{token}}
+
