@@ -6,7 +6,7 @@ import { CanDeactivate } from '@angular/router';
 
 export class PreventUnsavedChanges implements CanDeactivate<MemberEditComponent> {
     canDeactivate(component: MemberEditComponent) {
-        if(component.editForm.dirty) {
+        if (component.editForm.dirty) {
             return confirm('Etes vous sur de vouloir continuer ? Vos changements seront perdus');
         }
         return true;

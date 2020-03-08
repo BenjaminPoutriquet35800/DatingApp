@@ -78,7 +78,8 @@ namespace DatingApp.API.Data
 
         private Task<User> GetUserByUsername(String username)
         {
-            return _context.Users.FirstOrDefaultAsync(u => u.Username.Equals(username,StringComparison.OrdinalIgnoreCase));
+            return _context.Users.Include(p => p.Photos)
+                                 .FirstOrDefaultAsync(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
         }
     }
 }

@@ -14,6 +14,7 @@ import { AlertifyService } from './../../_services/alertify.service';
 })
 export class MemberEditComponent implements OnInit {
   user: User;
+  photoUrl: string;
   @ViewChild('editForm') editForm: NgForm;
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: any) {
@@ -23,14 +24,13 @@ export class MemberEditComponent implements OnInit {
   }
 
   constructor(private route: ActivatedRoute,
-              private alertify: AlertifyService,
-              private userService: UserService,
-              private authService: AuthService) { }
+    private alertify: AlertifyService,
+    private userService: UserService,
+    private authService: AuthService) { }
 
   ngOnInit() {
-    this.route.data.subscribe(data => {
-      this.user = data['user'];
-    });
+    this.route.data.subscribe(data => { this.user = data['user']; });
+    this.authService.currentPhotoUrl.subscribe(p => this.photoUrl = p);
   }
 
   updateUser() {
@@ -38,8 +38,13 @@ export class MemberEditComponent implements OnInit {
       this.alertify.success('Profil mis à jour.');
       this.editForm.reset(this.user);
     }, error => {
-        this.alertify.error(`Impossible de mettre votre profil à jour car : ${error}`);
-        console.log(error);
+      this.alertify.error(`Impossible de mettre votre profil à jour car : ${error}`);
+      console.log(error);
     });
   }
+
+  updateMainPhoto(photoUrl) {
+    this.user.photoUrl = photoUrl;
+  }
+
 }
