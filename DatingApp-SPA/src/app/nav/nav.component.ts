@@ -19,14 +19,18 @@ export class NavComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.authService.currentPhotoUrl.subscribe(p =>  this.photoUrl = p);
+    this.authService.currentPhotoUrl.subscribe(p => this.photoUrl = p);
   }
 
   login() {
     this.authService.login(this.model).subscribe(next => {
       this.alertifyService.success('Bienvenue ' + this.model.username);
     }, error => {
-      this.alertifyService.error(`Impossible de se connecter pour le moment`);
+      if (error === 'Unauthorized') {
+        this.alertifyService.error(`Compte introuvable.`);
+        return;
+      }
+      this.alertifyService.error(`Impossible de se connecter pour le moment.`);
     }, () => {
       this.router.navigate(['/members']);
     }
