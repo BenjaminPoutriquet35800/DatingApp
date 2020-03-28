@@ -23,7 +23,6 @@ export class ListsComponent implements OnInit {
 
   ngOnInit() {
     this.route.data.subscribe(data => {
-      console.log(data);
       this.users = data['users'].result;
       this.pagination = data['users'].pagination;
     });
@@ -32,9 +31,8 @@ export class ListsComponent implements OnInit {
 
   loadUsers() {
     this.userService
-      .getUsers(this.pagination.currentPage, this.pagination.itemsPerPage, null, this.likesParam)
+      .getUsers(this.pagination.currentPage, this.pagination.itemsPerPage, { gender: '*' }, this.likesParam)
       .subscribe((res: PaginatedResult<User[]>) => {
-        console.log(res);
         this.users = res.result;
         this.pagination = res.pagination;
       }, error => {
