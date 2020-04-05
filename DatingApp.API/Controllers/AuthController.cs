@@ -1,18 +1,17 @@
 using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
 using System.Text;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Configuration;
+
+using AutoMapper;
+
 using DatingApp.API.Data;
 using DatingApp.API.Dtos;
 using DatingApp.API.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-
-using AutoMapper;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace DatingApp.API.Controllers
 {
@@ -50,13 +49,8 @@ namespace DatingApp.API.Controllers
 
             var userDetailResponse = _mapper.Map<UserForDetailedDto>(createdUser);
 
-            return CreatedAtRoute("GetUser", new
-            {
-                controller = "Users",
-                id = createdUser.Id
-            }, userDetailResponse);
+            return CreatedAtRoute("GetUser", new { controller = "Users", id = createdUser.Id }, userDetailResponse);
         }
-
 
         [HttpPost]
         [Route("login")]
