@@ -1,6 +1,5 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { constructDependencies } from '@angular/core/src/di/reflective_provider';
 
 @Component({
   selector: 'app-home',
