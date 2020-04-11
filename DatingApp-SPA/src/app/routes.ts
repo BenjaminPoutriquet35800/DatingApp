@@ -12,6 +12,7 @@ import { MemberEditComponent } from './members/member-edit/member-edit.component
 import { MessagesComponent } from './messages/messages.component';
 import { HomeComponent } from './home/home.component';
 import { Routes } from '@angular/router';
+import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
 
 export const appRoutes: Routes = [
     { path: '', component: HomeComponent },
@@ -24,6 +25,7 @@ export const appRoutes: Routes = [
             { path: 'members/:id', component: MemberDetailComponent, resolve: { user: MemberDetailResolver } },
             { path: 'messages', component: MessagesComponent, resolve: { messages: MessagesResolver } },
             { path: 'lists', component: ListsComponent, resolve: { users: ListsResolver } },
+            { path: 'admin', component: AdminPanelComponent, data: { roles: ['Admin', 'Moderator'] } },
             {
                 path: 'member/edit', component: MemberEditComponent, resolve: { user: MemberEditResolver },
                 canDeactivate: [PreventUnsavedChanges]

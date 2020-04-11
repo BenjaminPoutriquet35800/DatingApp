@@ -27,7 +27,7 @@ namespace DatingApp.API.Controllers
             _repo = repo;
         }
 
-         [HttpGet]
+        [HttpGet]
         public async Task<IActionResult> GetMessagesForUser(int userId, [FromQuery]MessageParams messageParams)
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
@@ -73,18 +73,18 @@ namespace DatingApp.API.Controllers
 
             return Ok(messageThread);
         }
-       
+
         [HttpPost]
         public async Task<IActionResult> CreateMessage(int userId, MessageForCreationDto messageForCreationDto)
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
                 return Unauthorized();
 
-            var sender = await _repo.GetUser(userId);
+            var sender = await _repo.GetUser(userId, false);
 
             messageForCreationDto.SenderId = userId;
 
-            var recipient = await _repo.GetUser(messageForCreationDto.RecipientId);
+            var recipient = await _repo.GetUser(messageForCreationDto.RecipientId, false);
 
             if (recipient == null)
                 return BadRequest("Could not find user");
@@ -106,7 +106,7 @@ namespace DatingApp.API.Controllers
         public async Task<IActionResult> DeleteMessage(int id, int userId)
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-                return Unauthorized();  
+                return Unauthorized();
 
             var messageFromRepo = await _repo.GetMessage(id);
 
@@ -118,7 +118,7 @@ namespace DatingApp.API.Controllers
 
             if (messageFromRepo.SenderDeleted && messageFromRepo.RecipientDeleted)
                 _repo.Delete(messageFromRepo);
-            
+
             if (await _repo.SaveAll())
                 return NoContent();
 
@@ -129,7 +129,7 @@ namespace DatingApp.API.Controllers
         public async Task<IActionResult> MarkMessageAsRead(int userId, int id)
         {
             if (userId != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
-                return Unauthorized();  
+                return Unauthorized();
 
             var message = await _repo.GetMessage(id);
 

@@ -1,3 +1,8 @@
+import { SlugifyPipe } from './_pipes/slugify.pipe';
+import { RolesModalComponent } from './admin/roles-modal/roles-modal.component';
+import { PhotoManagementComponent } from './admin/photo-management/photo-management.component';
+import { UserManagementComponent } from './admin/user-management/user-management.component';
+import { AdminService } from './_services/admin.service';
 import { MessagesResolver } from './_resolvers/messages.resolver';
 import { ListsResolver } from './_resolvers/lists.resolver';
 import { PreventUnsavedChanges } from './_guards/prevent-unsaved-changes.guard';
@@ -5,7 +10,7 @@ import { MemberEditResolver } from './_resolvers/member-edit.resolver';
 import { MemberDetailResolver } from './_resolvers/member-detail.resolver';
 import { BrowserModule, HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule, Pipe } from '@angular/core';
+import { NgModule, Injectable, Pipe, PipeTransform } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -13,13 +18,13 @@ import {
    TabsModule,
    BsDatepickerModule,
    PaginationModule,
-   ButtonsModule
+   ButtonsModule,
+   ModalModule
 } from 'ngx-bootstrap';
 import { RouterModule } from '@angular/router';
 import { JwtModule } from '@auth0/angular-jwt';
 import { NgxGalleryModule } from 'ngx-gallery';
 import { FileUploadModule } from 'ng2-file-upload';
-import { TimeAgoPipe } from 'time-ago-pipe';
 
 import { AppComponent } from './app.component';
 import { NavComponent } from './nav/nav.component';
@@ -40,15 +45,19 @@ import { MemberDetailComponent } from './members/member-detail/member-detail.com
 import { MemberEditComponent } from './members/member-edit/member-edit.component';
 import { PhotoEditComponent } from './members/photo-edit/photo-edit.component';
 import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
+import { AdminPanelComponent } from './admin/admin-panel/admin-panel.component';
+import { HasRoleDirective } from './_directives/hasRole.directive';
+import { TimeAgoExtPipe } from './_pipes/time-ago-ext.pipe';
 
 export function tokenGetter() {
    return localStorage.getItem('token');
 }
 
-export class CustomHammerConfig extends HammerGestureConfig  {
+@Injectable()
+export class CustomHammerConfig extends HammerGestureConfig {
    overrides = {
-       pinch: { enable: false },
-       rotate: { enable: false }
+      pinch: { enable: false },
+      rotate: { enable: false }
    };
 }
 
@@ -66,7 +75,13 @@ export class CustomHammerConfig extends HammerGestureConfig  {
       MemberEditComponent,
       MemberMessagesComponent,
       PhotoEditComponent,
-      TimeAgoPipe
+      AdminPanelComponent,
+      UserManagementComponent,
+      PhotoManagementComponent,
+      RolesModalComponent,
+      TimeAgoExtPipe,
+      SlugifyPipe,
+      HasRoleDirective,
    ],
    imports: [
       BrowserModule,
@@ -80,6 +95,7 @@ export class CustomHammerConfig extends HammerGestureConfig  {
       ButtonsModule.forRoot(),
       TabsModule.forRoot(),
       RouterModule.forRoot(appRoutes),
+      ModalModule.forRoot(),
       NgxGalleryModule,
       FileUploadModule,
       JwtModule.forRoot({
@@ -96,6 +112,7 @@ export class CustomHammerConfig extends HammerGestureConfig  {
       AlertifyService,
       UserService,
       AuthGuard,
+      AdminService,
       PreventUnsavedChanges,
       MemberDetailResolver,
       MemberListResolver,
@@ -103,6 +120,9 @@ export class CustomHammerConfig extends HammerGestureConfig  {
       ListsResolver,
       MessagesResolver,
       { provide: HAMMER_GESTURE_CONFIG, useClass: CustomHammerConfig }
+   ],
+   entryComponents: [
+      RolesModalComponent
    ],
    bootstrap: [
       AppComponent

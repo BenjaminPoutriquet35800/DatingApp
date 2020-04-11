@@ -20,7 +20,7 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   changeMemberPhoto(photoUrl: string) {
-      this.photoUrl.next(photoUrl);
+    this.photoUrl.next(photoUrl);
   }
 
   login(model: any) {
@@ -46,5 +46,17 @@ export class AuthService {
   loggedIn() {
     const token = localStorage.getItem('token');
     return !this.jwtHelper.isTokenExpired(token);
+  }
+
+  roleMatch(allowedRoles) {
+    let isMatch = false;
+    const userRoles = this.decodedToken.role as Array<String>;
+    allowedRoles.forEach(r => {
+      isMatch = userRoles.includes(r);
+      if (isMatch) {
+        return;
+      }
+    });
+    return isMatch;
   }
 }
